@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <script src=https://code.jquery.com/jquery-3.3.1.min.js> </script> <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+  <title>Товары и продукция вагона</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Менюшка</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="http://localhost:8000/wagon/">Вагоны</a>
+      <a class="nav-item nav-link" href="http://localhost:8000/product/">Товары</a>
+    </div>
+  </div>
+</nav>
+  <div class="modal" id="modalLabel" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form method="POST" action="/wagon/">
+          <div class="modal-header">
+            <h5 class="modal-title">Добавить запись</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="productSelect">Товар</label>
+                </div>
+                <select class="custom-select" name="product">
+                  {% for item in products %}
+                  <option value="{{item.id}}">{{item.title}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Количество</span>
+                </div>
+                <input type="text" class="form-control" name="count">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            <button type="submit" class="btn btn-primary" name="insert" value="{{wagon_id}}">Добавить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="modelClear" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Удаление записей</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Вы действительно хотите удалить все записи данного вагона?</p>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="/wagon/">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Отменить</button>
+            <button type="submit" class="btn btn-danger" name="clear" value="{{wagon_id}}">Добавить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar bg-light d-flex flex-row">
+    <div class="input-group" style="width: 20%;">
+      <form method="POST" action="/wagon/">
+          <div class="row">
+            <select class="form-control col" name="goto">
+                <option selected value="{{wagon_id}}">Этот вагон</option>
+                {% for item in wagons %}
+                    <option value="{{item.id}}">Вагон №{{item.number}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-success">Перейти</button>
+        </div>
+      </form>
+    </div>
+    <div>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalLabel">Добавить
+        запись</button>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modelClear">Очистить записи
+        вагона</button>
+    </div>
+  </nav>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Наименование</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Всего</th>
+        <th scope="col">Остаток</th>
+        <th scope="col">Проданно на сумму</th>
+        <th scope="col">Операции</th>
+      </tr>
+    </thead>
+    <form method="POST" action="/wagon/">
+      <input hidden name="wagon" value="{{wagon_id}}"></p>
+      <tbody>
+        {% for item in wagon %}
+        <tr>
+          <td>{{item.title}}</td>
+          <td>{{item.price}} ₽</td>
+          <td>{{item.count}}</td>
+          <td>{{item.selled}}</td>
+          <td>{{item.total}} ₽</td>
+          <td>
+            <div class="d-inline-flex flex-row">
+                <div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary" type="submit" name="sub"
+                    value="{{item.product}}">-</button>
+                </div>
+                <div>
+                  <button class="btn btn-outline-secondary" type="submit" name="add"
+                    value="{{item.product}}">+</button>
+                </div>
+                  </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </form>
+  </table>
+</body>
+
+</html>

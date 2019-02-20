@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Редактировать запись товара</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Менюшка</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="http://localhost:8000/wagon/">Вагоны</a>
+      <a class="nav-item nav-link" href="http://localhost:8000/product/">Товары</a>
+    </div>
+  </div>
+</nav>
+    <form action="/product/" method="POST" class="row justify-content-center align-items-center" id="form">
+        <input hidden name="id" value="{{product.id}}">
+        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+                <label>Путь к файлу</label>
+                <input type="text" name="img_path" class="form-control" value="{{product.img_path}}">
+            </div>
+            <div class="form-group">
+                <label>Наименование</label>
+                <input type="text" name="title" class="form-control" value="{{product.title}}">
+            </div>
+            <div class="form-group">
+                <label>Цена</label>
+                <input type="text" name="price" class="form-control" value="{{product.price}}">
+            </div>
+            <div class="form-group">
+                    <label>Вес</label>
+                    <input type="text" name="unit" class="form-control" value="{{product.unit}}">
+                </div>
+            <div class="input-group mb-3">
+                <select class="custom-select" name="tag" form="form">
+                    {% for item in tags %}
+                    <option value="{{item.id}}">{{item.title}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="text-right">
+                <button type="button" onClick='location.href="http://konverdev.ru/product"'
+                    class="btn btn-danger">Отменить</button>
+                <button type="submit" class="btn btn-primary" name="save" value="true">Сохранить</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
